@@ -10,5 +10,9 @@ module Merchants
       @merchant = Merchant.find(params[:id])
       @discount = BulkDiscount.find(params[:discount_id])
     end
+
+    def new
+      @merchant = Merchant.find(params[:id])
+    end
   end
 end
