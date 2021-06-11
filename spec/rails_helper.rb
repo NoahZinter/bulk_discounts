@@ -71,22 +71,14 @@ RSpec.configure do |config|
         'id' => 20_480_167,
         'contributions' => 50 }
     ]
-    # class_double('GithubService', :retrieve_stats => @hash_array).as_stubbed_const
-    @github_data_2 = {
+    @repo_name = {
       "id": 373_926_639,
       "node_id": 'MDEwOlJlcG9zaXRvcnkzNzM5MjY2Mzk=',
       "name": 'bulk_discounts'
     }
+    @pulls = 4
 
-    # class_double('GithubService', :retrieve_pulls => @github_data_2).as_stubbed_const
-
-    @github_data = {
-      "id": 375_818_246,
-      "node_id": 'MDEwOlJlcG9zaXRvcnkzNzM5MjY2Mzk=',
-      "name": 'bulk_discounts'
-    }
-
-    class_double('GithubService', retrieve_name: @github_data, retrieve_pulls: @github_data_2,
+    class_double('GithubService', retrieve_name: @repo_name, retrieve_pulls: @pulls,
                                   retrieve_stats: @hash_array).as_stubbed_const
   end
 

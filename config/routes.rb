@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     get '/:id/invoices/:invoice_id', to: 'invoices#show', as: 'merch_invoice'
     patch '/:id/invoice_items/:invoice_item_id', to: 'invoices#show', as: 'patch_invoice_item'
 
-    get '/:id/discounts', to: 'discounts#index', :as => 'discounts'
+    get '/:id/bulk_discounts', to: 'bulk_discounts#index', :as => 'bulk_discounts'
+    get '/:id/bulk_discounts/:discount_id', to: 'bulk_discounts#show'
   end
 end
