@@ -1,7 +1,28 @@
 <h1><%="All Discounts for #{@merchant.name}" %> </h1>
 
-<% @merchant.bulk_discounts.each do |discount| %>
-<p><%= "Discount Quantity Threshold: #{discount.quantity_threshold}" %>
-  <%= "Discount Percentage: #{discount.discount_percent}" %>
-  <%= link_to "See Details for Discount Percentage: #{discount.discount_percent}", "/merchants/#{@merchant.id}/bulk_discounts/#{discount.id}" %></p>
-<% end %>
+<div class="row">
+  <div class="col-sm">
+    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+      <div class="card-body">
+        <p class="card-text"><% @bulk_discounts.each do |discount| %>
+          <%= "Discount Quantity Threshold: #{discount.quantity_threshold}" %>
+          <%= "Discount Percentage: #{discount.discount_percent}" %>
+          <%= link_to "See Details for Discount Percentage: #{discount.discount_percent}", "/merchants/#{@merchant.id}/bulk_discounts/#{discount.id}" %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm">
+    <div class='card text-white bg-dark mb-3' style='max-width: 18rem;'>
+      <div class='card-header'>Next 3 Holidays</div>
+      <div class="card-body">
+        <p class="card-text"><% @holidays.each do |holiday|%>
+          <%= "Holiday: #{holiday['localName']}" %>
+          <%= "Is on: #{holiday['date']}" %></p>
+        <% end %>
+      </div>
+    </div>
+
+
+
+  </div>
