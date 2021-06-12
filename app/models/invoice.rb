@@ -15,7 +15,8 @@ class Invoice < ApplicationRecord
   end
 
   def applied_discounts
-    
+    bulk_discounts
+    # binding.pry
   end
 
   def self.incomplete_invoices
