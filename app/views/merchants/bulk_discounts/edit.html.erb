@@ -1,0 +1,9 @@
+<h1><%= "Edit Discount Percentage #{@discount.discount_percent} For #{@merchant.name}" %></h1>
+
+<%= form_with url:"merchants/#{@merchant.id}/bulk_discounts/#{@discount.id}/edit", method: :patch do |f| %>
+<%= f.label :quantity_threshold %>
+<%= f.number_field :quantity_threshold, :value => @discount.quantity_threshold %>
+<%=f.label :discount_percent %>
+<%= f.number_field :discount_percent, :value => @discount.discount_percent %>
+<%= f.submit %>
+<% end %>

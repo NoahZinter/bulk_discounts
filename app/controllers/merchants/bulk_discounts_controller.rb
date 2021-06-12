@@ -33,5 +33,14 @@ module Merchants
       redirect_to "/merchants/#{merchant.id}/bulk_discounts"
       flash[:deleted] = "Discount Deleted!"
     end
+
+    def edit
+      @merchant = Merchant.find(params[:id])
+      @discount = BulkDiscount.find(params[:discount_id])
+    end
+
+    def update
+
+    end
   end
 end
