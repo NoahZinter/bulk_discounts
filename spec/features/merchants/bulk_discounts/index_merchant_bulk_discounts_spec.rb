@@ -111,4 +111,13 @@ describe 'merchant bulk discounts index' do
     expect(page).to have_content("Next 3 Holidays")
     expect(page).to have_content("Holiday: Independence Day Is on: 2021-07-05")
   end
+
+  it 'has a link to create new discount' do
+    expect(page).to have_button('Create New Discount')
+  end
+
+  it 'clicking create new discount travels to new discount page' do
+    click_button('Create New Discount')
+    expect(current_path).to eq "/merchants/#{@merchant.id}/bulk_discounts/new"
+  end
 end

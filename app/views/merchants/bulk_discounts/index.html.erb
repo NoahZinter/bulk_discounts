@@ -1,5 +1,5 @@
 <h1><%="All Discounts for #{@merchant.name}" %> </h1>
-
+<%= button_to "Create New Discount", merchants_new_discount_path, method: :get %>
 <div class="row">
   <div class="col-sm">
     <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
@@ -22,7 +22,4 @@
         <% end %>
       </div>
     </div>
-
-
-
-  </div>
+</div>
