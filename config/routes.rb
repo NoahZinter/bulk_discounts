@@ -30,5 +30,6 @@ Rails.application.routes.draw do
     get '/:id/bulk_discounts', to: 'bulk_discounts#index', :as => 'bulk_discounts'
     get '/:id/bulk_discounts/:discount_id', to: 'bulk_discounts#show'
     post '/:id/bulk_discounts', to: 'bulk_discounts#create', :as => 'create_discount'
+    delete '/:id/bulk_discounts/:discount_id', to: 'bulk_discounts#destroy', :as => 'delete_discount'
   end
 end

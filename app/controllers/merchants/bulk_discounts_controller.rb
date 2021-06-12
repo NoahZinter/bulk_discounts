@@ -26,5 +26,12 @@ module Merchants
         flash[:incomplete] = "Discount NOT Created: Missing/Incorrect Information"
       end
     end
+
+    def destroy
+      merchant = Merchant.find(params[:id])
+      BulkDiscount.find(params[:discount_id]).destroy
+      redirect_to "/merchants/#{merchant.id}/bulk_discounts"
+      flash[:deleted] = "Discount Deleted!"
+    end
   end
 end
