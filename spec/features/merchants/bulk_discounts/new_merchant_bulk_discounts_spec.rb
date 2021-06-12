@@ -20,7 +20,7 @@ describe 'merchant bulk discount new page' do
     click_button('Save')
 
     expect(current_path).to eq "/merchants/#{@merchant.id}/bulk_discounts"
-    expect(page).to have_content("Discount for #{@merchant.name} Successully Created!")
+    expect(page).to have_content("Discount for #{@merchant.name} Successfully Created!")
   end
   it 'does not create invalid discounts' do
     fill_in 'Discount percent', with: 60

@@ -23,7 +23,7 @@ module Merchants
         flash[:success] = "Discount for #{merchant.name} Successfully Created!"
       else
         redirect_to "/merchants/#{merchant.id}/bulk_discounts/new"
-        flash[:incomplete] = "Discount NOT Ccreated: Missing/Incorrect Information"
+        flash[:incomplete] = "Discount NOT Created: Missing/Incorrect Information"
       end
     end
   end
