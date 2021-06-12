@@ -19,4 +19,15 @@ describe 'merchant bulk discount show' do
   it 'displays the percentage discount' do
     expect(page).to have_content("Discount Percentage: #{@discount_1.discount_percent}")
   end
+
+  it 'contains a link to edit the discount' do
+    expect(page).to have_link('Edit This Discount')
+  end
+
+  it 'clicking the link travels to discount edit page' do
+    click_link("Edit This Discount")
+
+    expect(current_path).to eq "/merchants/#{@merchant.id}/bulk_discounts/#{@discount_1.id}/edit"
+    save_and_open_page
+  end
 end

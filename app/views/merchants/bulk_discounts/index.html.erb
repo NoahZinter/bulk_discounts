@@ -7,7 +7,8 @@
         <p class="card-text"><% @bulk_discounts.each do |discount| %>
           <%= "Discount Quantity Threshold: #{discount.quantity_threshold}" %>
           <%= "Discount Percentage: #{discount.discount_percent}" %>
-          <%= link_to "See Details for Discount Percentage: #{discount.discount_percent}", "/merchants/#{@merchant.id}/bulk_discounts/#{discount.id}" %></p>
+          <%= link_to "See Details for Discount Percentage: #{discount.discount_percent}", "/merchants/#{@merchant.id}/bulk_discounts/#{discount.id}" %>
+          <%= button_to "Delete Discount Percentage #{discount.discount_percent}", "/merchants/#{@merchant.id}/bulk_discounts/#{discount.id}", method: :delete %></p>
         <% end %>
       </div>
     </div>
@@ -22,4 +23,4 @@
         <% end %>
       </div>
     </div>
-</div>
+  </div>

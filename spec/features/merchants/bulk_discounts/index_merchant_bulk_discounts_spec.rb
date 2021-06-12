@@ -120,4 +120,19 @@ describe 'merchant bulk discounts index' do
     click_button('Create New Discount')
     expect(current_path).to eq "/merchants/#{@merchant.id}/bulk_discounts/new"
   end
+
+  it 'each discount has a button to delete' do
+    expect(page).to have_button('Delete Discount Percentage 20')
+    expect(page).to have_button('Delete Discount Percentage 25')
+    expect(page).to have_button('Delete Discount Percentage 30')
+  end
+
+  it 'clicking the delete button deletes a discount' do
+    click_button('Delete Discount Percentage 20')
+
+    expect(current_path).to eq "/merchants/#{@merchant.id}/bulk_discounts"
+    expect(page).not_to have_content('Discount Quantity Threshold: 10')
+    expect(page).not_to have_content('Discount Percentage: 20')
+    expect(page).to have_content('Discount Deleted!')
+  end
 end
