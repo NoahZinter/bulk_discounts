@@ -23,6 +23,15 @@ RSpec.describe Invoice, type: :model do
     end
   end
   describe 'instance methods' do
+    before(:each) do
+      BulkDiscount.destroy_all
+      @merchant_1 = Merchant.find(1)
+      @merchant_3 = Merchant.find(3)
+      @discount_1 = @merchant_3.bulk_discounts.create!(quantity_threshold: 5, discount_percent: 5)
+      @discount_2 = @merchant_3.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 30)
+      @discount_3 = @merchant_3.bulk_discounts.create!(quantity_threshold: 70, discount_percent: 50)
+      @discount_4 = @merchant_1.bulk_discounts.create!(quantity_threshold: 15, discount_percent: 15)
+    end
     describe 'revenue' do
       it 'shows the revenue for an invoice' do
         invoice = Invoice.first
