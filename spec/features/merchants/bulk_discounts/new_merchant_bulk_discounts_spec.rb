@@ -15,9 +15,18 @@ describe 'merchant bulk discount new page' do
     expect(page).to have_field('Discount percent')
   end
   it 'creates a new discount' do
-    
+    fill_in 'Quantity threshold', with: 30
+    fill_in 'Discount percent', with: 60
+    click_button('Save')
+
+    expect(current_path).to eq "/merchants/#{@merchant.id}/bulk_discounts"
+    expect(page).to have_content("Discount for #{@merchant.name} Successully Created!")
   end
   it 'does not create invalid discounts' do
-    
+    fill_in 'Discount percent', with: 60
+    click_button('Save')
+
+    expect(current_path).to eq "/merchants/#{@merchant.id}/bulk_discounts/new"
+    expect(page).to have_content "Discount NOT Created: Missing/Incorrect Information"
   end
 end
