@@ -14,4 +14,10 @@ describe 'merchant bulk discount new page' do
     expect(page).to have_field('Quantity threshold')
     expect(page).to have_field('Discount percent')
   end
+  it 'creates a new discount' do
+    
+  end
+  it 'does not create invalid discounts' do
+    
+  end
 end
