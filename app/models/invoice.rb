@@ -14,12 +14,6 @@ class Invoice < ApplicationRecord
     invoice_items.sum('quantity * unit_price')
   end
 
-  # def applied_discounts
-  #   bulk_discounts
-  #   .where("quantity_threshold >= invoice_items.quantity")
-  #   .group(:id)
-  # end
-
   def self.incomplete_invoices
     joins(:invoice_items)
       .where('invoice_items.status != 2')

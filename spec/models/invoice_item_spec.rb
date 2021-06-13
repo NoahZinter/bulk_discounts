@@ -8,9 +8,24 @@ RSpec.describe InvoiceItem, type: :model do
     it { should belong_to(:item) }
   end
 
-  # describe 'class methods' do
-    
-  # end
+  describe 'class methods' do
+    describe 'merch not shipped' do
+      it 'displays unshipped invoice items' do
+        @merchant = Merchant.find(1)
+        expected = [
+          InvoiceItem.find(2), InvoiceItem.find(8), InvoiceItem.find(29), 
+          InvoiceItem.find(45), InvoiceItem.find(49), InvoiceItem.find(50), InvoiceItem.find(58), InvoiceItem.find(59), InvoiceItem.find(83), 
+          InvoiceItem.find(90), InvoiceItem.find(92), InvoiceItem.find(94), InvoiceItem.find(96), InvoiceItem.find(97),
+          InvoiceItem.find(105), InvoiceItem.find(106), InvoiceItem.find(113), InvoiceItem.find(114), InvoiceItem.find(121),
+          InvoiceItem.find(122), InvoiceItem.find(137), InvoiceItem.find(154), InvoiceItem.find(171), InvoiceItem.find(176),
+          InvoiceItem.find(182), InvoiceItem.find(194)
+          ]
+
+          expect(InvoiceItem.merch_not_shipped(@merchant.id)).to eq(expected)
+          expect(expected.first.status).not_to eq("shipped")
+      end
+    end
+  end
 
   describe 'instance methods' do
     before(:each) do
