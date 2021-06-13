@@ -16,7 +16,7 @@
         <h4>Ordered: <%= @invoice.formatted_time %></h4>
         <!-- <h4 style="padding-top: 8px; color: rgb(191, 202, 209);" class="card-title"><%= @invoice.id %> Status: <%= @invoice.status%></h4> -->
         <h4>Customer: <%= @customer.first_name + ' ' + @customer.last_name %></h4>
-        <h3>Invoice Revenue: $<%= @invoice.revenue %></h3>
+        <h3>Invoice Revenue: $<%= (@invoice.revenue.to_f) / 100 %></h3>
         <br>
       </div>
       <div class="card-body" style="background-color: rgb(217, 221, 222)">
@@ -28,18 +28,21 @@
             <th>status</th>
             <th></th>
           </tr>
-          <% @items.each_with_index do |item, index| %>
+          <% @invoice_items.each_with_index do |item, index| %>
             <tr>
               <th scope="row"><%=index + 1%></th>
               <td><%= item.name %></td>
               <td><%= item.quantity %></td>
-              <td class="status">       
-                <div class="dropdown">
+              <% if !item.applied_discount.nil? %>
+              <td><%= link_to "#{item.name} applied discount", "/merchants/#{@merchant.id}/bulk_discounts/#{item.applied_discount.id}" %> </td>
+              <% end %>
+              <td class="status">
+                <div class="dropdown" id="item_id-<%= item.id %>">
                   <button class="btn btn-primary dropdown-toggle float-left" type="button" data-toggle="dropdown" id="f<%=item.id%>">
                     <%= item.status %>
                   <span class="caret"></span></button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <% @items.statuses.keys().each do |status| %>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-<%= item.id %>">
+                    <% @invoice_items.statuses.keys().each do |status| %>
                       <%= link_to status, "/invoice_items/#{item.id}/#{status}", method: :patch, params: {status: status}, :class=>"dropdown-item"%>
                       
                     <% end %>

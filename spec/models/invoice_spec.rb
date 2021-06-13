@@ -3,11 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Invoice, type: :model do
-  describe 'validations' do
+  describe 'relationships' do
     it { should belong_to(:customer) }
     it { should have_many(:transactions) }
     it { should have_many(:invoice_items) }
     it { should have_many(:items).through(:invoice_items) }
+    it { should have_many(:merchants).through(:items) }
+    it { should have_many(:bulk_discounts).through(:merchants) }
   end
 
   describe 'class methods' do
@@ -19,12 +21,28 @@ RSpec.describe Invoice, type: :model do
         expect(data.last.status).to eq('in progress')
       end
     end
+
+    describe 'merchant_invoices' do
+      it 'selects invoices for a merchant' do
+        
+      end
+    end
+
+    describe 'invoice_items_formatted' do
+      it 'returns invoice items and item names for given invoice' do
+        invoice = Invoice.first
+        
+        expect(invoice.invoice_items_formatted).to eq([InvoiceItem.find(1), InvoiceItem.find(2), InvoiceItem.find(3), InvoiceItem.find(4)])
+        expect(invoice.invoice_items_formatted.first.name).to eq("Rustic Silk Car")
+        expect(invoice.invoice_items_formatted.first.merchant_id).to eq(3)
+      end
+    end
   end
+
   describe 'instance methods' do
     describe 'revenue' do
       it 'shows the revenue for an invoice' do
         invoice = Invoice.first
-
         expect(invoice.revenue.to_f / 100).to eq(626.91)
       end
     end

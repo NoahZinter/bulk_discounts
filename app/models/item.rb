@@ -10,7 +10,7 @@ class Item < ApplicationRecord
 
   validates :name, :description, :unit_price, presence: true
 
-  scope :from_merch, lambda { |merchant_id|
+  scope :invoice_items_formatted, lambda { |merchant_id|
                        select('merchants.id, items.*, invoice_items.quantity, invoice_items.status')
                          .joins(invoice_items: :invoice)
                          .where('merchants.id = ?', merchant_id)

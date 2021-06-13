@@ -5,8 +5,14 @@ class Invoice < ApplicationRecord
   has_many :transactions
   has_many :invoice_items
   has_many :items, through: :invoice_items
+  has_many :merchants, through: :items
+  has_many :bulk_discounts, through: :merchants
 
   enum status: { 'in progress': 0, cancelled: 1, completed: 2 }
+
+  def revenue
+    invoice_items.sum('quantity * unit_price')
+  end
 
   def self.incomplete_invoices
     joins(:invoice_items)
@@ -16,19 +22,14 @@ class Invoice < ApplicationRecord
       .distinct
   end
 
-  def revenue
-    invoice_items.sum('quantity * unit_price')
-  end
-
   def self.merchant_invoices(merchant_id)
     select('DISTINCT invoices.*')
       .joins(invoice_items: :item)
       .where('items.merchant_id = ?', merchant_id)
   end
 
-  def self.from_merch(invoice_id)
-    find(invoice_id)
-      .invoice_items
+  def invoice_items_formatted
+      invoice_items
       .select('invoice_items.* ,items.name, items.merchant_id')
       .joins(:item)
   end
