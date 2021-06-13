@@ -34,7 +34,7 @@
               <td><%= item.name %></td>
               <td><%= item.quantity %></td>
               <% if !item.applied_discount.nil? %>
-              <td><%= link_to "#{item.name} applied discounts", "merchants/#{@merchant.id}/bulk_discounts/#{item.applied_discount.id}" %> </td>
+              <td><%= link_to "#{item.name} applied discount", "/merchants/#{@merchant.id}/bulk_discounts/#{item.applied_discount.id}" %> </td>
               <% end %>
               <td class="status">
                 <div class="dropdown" id="item_id-<%= item.id %>">
