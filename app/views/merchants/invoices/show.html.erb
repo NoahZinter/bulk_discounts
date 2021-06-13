@@ -28,18 +28,18 @@
             <th>status</th>
             <th></th>
           </tr>
-          <% @items.each_with_index do |item, index| %>
+          <% @invoice_items.each_with_index do |item, index| %>
             <tr>
               <th scope="row"><%=index + 1%></th>
               <td><%= item.name %></td>
               <td><%= item.quantity %></td>
-              <td class="status">       
-                <div class="dropdown">
+              <td class="status">
+                <div class="dropdown" id="item_id-<%= item.id %>">
                   <button class="btn btn-primary dropdown-toggle float-left" type="button" data-toggle="dropdown" id="f<%=item.id%>">
                     <%= item.status %>
                   <span class="caret"></span></button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <% @items.statuses.keys().each do |status| %>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-<%= item.id %>">
+                    <% @invoice_items.statuses.keys().each do |status| %>
                       <%= link_to status, "/invoice_items/#{item.id}/#{status}", method: :patch, params: {status: status}, :class=>"dropdown-item"%>
                       
                     <% end %>
