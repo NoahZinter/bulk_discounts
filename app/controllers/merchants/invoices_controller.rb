@@ -11,7 +11,7 @@ module Merchants
       @invoice = Invoice.find(params[:invoice_id])
       @merchant = Merchant.find(params[:id])
       @customer = Customer.find(@invoice.customer_id)
-      @items = Invoice.from_merch(params[:invoice_id])
+      @items = Invoice.invoice_items_formatted(params[:invoice_id])
     end
   end
 end

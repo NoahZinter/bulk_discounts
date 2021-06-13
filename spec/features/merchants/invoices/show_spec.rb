@@ -41,7 +41,7 @@ RSpec.describe 'merchant invoice show page' do
 
   it 'has the invoice id, status, date created formatted, customer first and last name' do
     invoice = Invoice.all[10]
-    items = Invoice.from_merch(invoice.id)
+    items = Invoice.invoice_items_formatted(invoice.id)
     customer = Customer.find(invoice.customer_id)
     visit "merchants/#{items[0].merchant_id}/invoices/#{invoice.id}"
     expect(page).to have_content(invoice.id)
@@ -64,7 +64,7 @@ RSpec.describe 'merchant invoice show page' do
 
   it 'has the invoice items information: name, quantity ordered, price, and invoice item status -- only has for this merchant' do
     invoice = Invoice.all[10]
-    items = Invoice.from_merch(invoice.id)
+    items = Invoice.invoice_items_formatted(invoice.id)
     visit "merchants/#{items[0].merchant_id}/invoices/#{invoice.id}"
     items.each do |item|
       expect(page).to have_content(item.name)
@@ -81,7 +81,7 @@ RSpec.describe 'merchant invoice show page' do
 
   it 'has the invoice item status as a select field, set to current status' do
     invoice = Invoice.all[10]
-    items = Invoice.from_merch(invoice.id)
+    items = Invoice.invoice_items_formatted(invoice.id)
     visit "merchants/#{items[0].merchant_id}/invoices/#{invoice.id}"
     within('.table') do
       # map item statuses and status btn values, check too see if matches
@@ -102,7 +102,7 @@ RSpec.describe 'merchant invoice show page' do
 
   xit 'allows changing the item status' do
     invoice = Invoice.all[10]
-    items = Invoice.from_merch(invoice.id)
+    items = Invoice.invoice_items_formatted(invoice.id)
     visit "merchants/#{items[0].merchant_id}/invoices/#{invoice.id}"
     save_and_open_page
     first('.status').click_button

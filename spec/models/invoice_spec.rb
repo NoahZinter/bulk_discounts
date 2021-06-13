@@ -21,37 +21,29 @@ RSpec.describe Invoice, type: :model do
         expect(data.last.status).to eq('in progress')
       end
     end
-  end
-  describe 'instance methods' do
-    before(:each) do
-      @invoice_1 = Invoice.find(1)
-      @invoice_2 = Invoice.find(2)
-      @invoice_3 = Invoice.find(3)
-      @merchant_1 = Merchant.find(1)
-      @merchant_2 = Merchant.find(2)
-      @merchant_3 = Merchant.find(3)
-      BulkDiscount.destroy_all
-      @discount_1 = @merchant_3.bulk_discounts.create!(quantity_threshold: 5, discount_percent: 5)
-      @discount_2 = @merchant_3.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 30)
-      @discount_3 = @merchant_3.bulk_discounts.create!(quantity_threshold: 70, discount_percent: 50)
-      @discount_4 = @merchant_1.bulk_discounts.create!(quantity_threshold: 15, discount_percent: 15)
-      @discount_5 = @merchant_2.bulk_discounts.create!(quantity_threshold: 10, discount_percent: 15)
-      @discount_6 = @merchant_2.bulk_discounts.create!(quantity_threshold: 15, discount_percent: 20)
-      @discount_7 = @merchant_2.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 25)
-      @discount_8 = @merchant_2.bulk_discounts.create!(quantity_threshold: 25, discount_percent: 20)
-      @discount_9 = @merchant_3.bulk_discounts.create!(quantity_threshold: 10, discount_percent: 20)
-      @discount_10 = @merchant_3.bulk_discounts.create!(quantity_threshold: 25, discount_percent: 75)
-      @discount_11 = @merchant_3.bulk_discounts.create!(quantity_threshold: 30, discount_percent: 5)
-      
-    end
-    describe 'revenue' do
-      xit 'shows the revenue for an invoice' do
-        expect(@invoice.revenue.to_f / 100).to eq(626.91)
+
+    describe 'merchant_invoices' do
+      it 'selects invoices for a merchant' do
+        
       end
     end
-    describe 'applied_discounts' do
-      it 'shows applied discounts' do
-        expect(@invoice.applied_discounts).to eq([@discount_3, @discount_2, @discount_1])
+
+    describe 'invoice_items_formatted' do
+      it 'returns invoice items and item names for given invoice' do
+        id = Invoice.first.id
+        
+        expect(Invoice.invoice_items_formatted(id)).to eq([InvoiceItem.find(1), InvoiceItem.find(2), InvoiceItem.find(3), InvoiceItem.find(4)])
+        expect(Invoice.invoice_items_formatted(id).first.name).to eq("Rustic Silk Car")
+        expect(Invoice.invoice_items_formatted(id).first.merchant_id).to eq(3)
+      end
+    end
+  end
+
+  describe 'instance methods' do
+    describe 'revenue' do
+      it 'shows the revenue for an invoice' do
+        invoice = Invoice.first
+        expect(invoice.revenue.to_f / 100).to eq(626.91)
       end
     end
   end
