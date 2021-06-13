@@ -104,9 +104,17 @@ RSpec.describe 'merchant invoice show page' do
     invoice = Invoice.all[10]
     items = invoice.invoice_items_formatted
     visit "/merchants/#{items[0].merchant_id}/invoices/#{invoice.id}"
+    # within("#item_id-#{items.first.id}") do
+    #   find("#f#{items.first.id}").click
+    #     page.select "shipped"
+    # end
+    # save_and_open_page
     within("#item_id-#{items.first.id}") do
-      find("#f#{items.first.id}").click
-        page.select "shipped"
+      within("#f#{items.first.id}") do
+        within("dropdown-#{items.first.id}") do
+          click_link('shipped')
+        end
+      end
     end
     expect(first('.status').text).to eq 'shipped'
   end
@@ -149,5 +157,21 @@ RSpec.describe 'merchant invoice show page' do
 
     click_link("#{items[0].name} applied discount")
     expect(current_path).to eq "/merchants/#{merchant.id}/bulk_discounts/#{discount_10.id}"
+  end
+
+  it 'does not show discount links for undiscounted items' do
+    invoice = Invoice.find(1)
+    items = invoice.items
+    merchant = Merchant.find(3)
+    BulkDiscount.destroy_all
+    discount_1 = merchant.bulk_discounts.create!(quantity_threshold: 5, discount_percent: 5)
+    discount_2 = merchant.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 30)
+    discount_3 = merchant.bulk_discounts.create!(quantity_threshold: 70, discount_percent: 50)
+    discount_9 = merchant.bulk_discounts.create!(quantity_threshold: 10, discount_percent: 30)
+    discount_10 = merchant.bulk_discounts.create!(quantity_threshold: 25, discount_percent: 75)
+    discount_11 = merchant.bulk_discounts.create!(quantity_threshold: 30, discount_percent: 5)
+    visit "/merchants/#{merchant.id}/invoices/#{invoice.id}"
+
+    expect(page).not_to have_link("#{items[1].name} applied discount")
   end
 end
