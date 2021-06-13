@@ -25,6 +25,8 @@ RSpec.describe Invoice, type: :model do
   describe 'instance methods' do
     before(:each) do
       @invoice = Invoice.find(1)
+      @invoice = Invoice.find(2)
+      @invoice = Invoice.find(3)
       @merchant_1 = Merchant.find(1)
       @merchant_2 = Merchant.find(2)
       @merchant_3 = Merchant.find(3)
@@ -33,16 +35,23 @@ RSpec.describe Invoice, type: :model do
       @discount_2 = @merchant_3.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 30)
       @discount_3 = @merchant_3.bulk_discounts.create!(quantity_threshold: 70, discount_percent: 50)
       @discount_4 = @merchant_1.bulk_discounts.create!(quantity_threshold: 15, discount_percent: 15)
-      @discount_5 = @merchant_2.bulk_discounts.create!(quantity_threshold: 25, discount_percent: 45)
+      @discount_5 = @merchant_2.bulk_discounts.create!(quantity_threshold: 10, discount_percent: 15)
+      @discount_6 = @merchant_2.bulk_discounts.create!(quantity_threshold: 15, discount_percent: 20)
+      @discount_7 = @merchant_2.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 25)
+      @discount_8 = @merchant_2.bulk_discounts.create!(quantity_threshold: 25, discount_percent: 20)
+      @discount_9 = @merchant_3.bulk_discounts.create!(quantity_threshold: 10, discount_percent: 20)
+      @discount_10 = @merchant_3.bulk_discounts.create!(quantity_threshold: 25, discount_percent: 75)
+      @discount_11 = @merchant_3.bulk_discounts.create!(quantity_threshold: 30, discount_percent: 5)
+      
     end
     describe 'revenue' do
-      it 'shows the revenue for an invoice' do
+      xit 'shows the revenue for an invoice' do
         expect(@invoice.revenue.to_f / 100).to eq(626.91)
       end
     end
     describe 'applied_discounts' do
       it 'shows applied discounts' do
-        expect(@invoice.applied_discounts).to eq
+        expect(@invoice.applied_discounts).to eq([@discount_3, @discount_2, @discount_1])
       end
     end
   end

@@ -8,4 +8,12 @@ class BulkDiscount < ApplicationRecord
   def self.default_scope
     order(discount_percent: :desc, quantity_threshold: :asc)
   end
+
+  def self.apply_discount(select_merchant)
+    joins(:merchants)
+    .where(merchant: {id: select_merchant.id})
+    .joins(items: :invoice_items)
+    .where(item: {merchant_id: select_merchant.id})
+
+  end
 end

@@ -16,7 +16,8 @@ class Invoice < ApplicationRecord
 
   def applied_discounts
     bulk_discounts
-    # binding.pry
+    .where("quantity_threshold >= invoice_items.quantity")
+    .group(:id)
   end
 
   def self.incomplete_invoices
