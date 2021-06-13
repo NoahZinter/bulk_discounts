@@ -24,9 +24,9 @@ RSpec.describe Invoice, type: :model do
   end
   describe 'instance methods' do
     before(:each) do
-      @invoice = Invoice.find(1)
-      @invoice = Invoice.find(2)
-      @invoice = Invoice.find(3)
+      @invoice_1 = Invoice.find(1)
+      @invoice_2 = Invoice.find(2)
+      @invoice_3 = Invoice.find(3)
       @merchant_1 = Merchant.find(1)
       @merchant_2 = Merchant.find(2)
       @merchant_3 = Merchant.find(3)

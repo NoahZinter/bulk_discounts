@@ -17,8 +17,8 @@ RSpec.describe BulkDiscount, type: :model do
   describe 'class methods' do
     before(:each) do
       @invoice = Invoice.find(1)
-      @invoice = Invoice.find(2)
-      @invoice = Invoice.find(3)
+      @invoice_2 = Invoice.find(2)
+      @invoice_3 = Invoice.find(3)
       @merchant_1 = Merchant.find(1)
       @merchant_2 = Merchant.find(2)
       @merchant_3 = Merchant.find(3)
@@ -38,6 +38,12 @@ RSpec.describe BulkDiscount, type: :model do
     describe 'default scope' do
       it 'orders by discount percent desc and quantity threshold asc' do
         expect(@merchant_3.bulk_discounts).to eq([@discount_10, @discount_3, @discount_9, @discount_2, @discount_1, @discount_11])
+      end
+    end
+
+    describe 'applied discount' do
+      it 'returns applicable discounts' do
+        
       end
     end
   end

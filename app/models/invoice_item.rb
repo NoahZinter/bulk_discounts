@@ -15,4 +15,10 @@ class InvoiceItem < ApplicationRecord
       .where('merchants.id = ?', merch_id)
       .where.not('transactions.result = ?', 1)
   end
+
+  def applied_discount
+    item.merchant.bulk_discounts
+    .where("quantity_threshold <= ?", self.quantity)
+    .first
+  end
 end
