@@ -28,9 +28,8 @@ class Invoice < ApplicationRecord
       .where('items.merchant_id = ?', merchant_id)
   end
 
-  def self.invoice_items_formatted(invoice_id)
-    find(invoice_id)
-      .invoice_items
+  def invoice_items_formatted
+      invoice_items
       .select('invoice_items.* ,items.name, items.merchant_id')
       .joins(:item)
   end

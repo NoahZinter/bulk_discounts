@@ -30,11 +30,11 @@ RSpec.describe Invoice, type: :model do
 
     describe 'invoice_items_formatted' do
       it 'returns invoice items and item names for given invoice' do
-        id = Invoice.first.id
+        invoice = Invoice.first
         
-        expect(Invoice.invoice_items_formatted(id)).to eq([InvoiceItem.find(1), InvoiceItem.find(2), InvoiceItem.find(3), InvoiceItem.find(4)])
-        expect(Invoice.invoice_items_formatted(id).first.name).to eq("Rustic Silk Car")
-        expect(Invoice.invoice_items_formatted(id).first.merchant_id).to eq(3)
+        expect(invoice.invoice_items_formatted).to eq([InvoiceItem.find(1), InvoiceItem.find(2), InvoiceItem.find(3), InvoiceItem.find(4)])
+        expect(invoice.invoice_items_formatted.first.name).to eq("Rustic Silk Car")
+        expect(invoice.invoice_items_formatted.first.merchant_id).to eq(3)
       end
     end
   end
