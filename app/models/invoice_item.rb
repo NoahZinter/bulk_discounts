@@ -26,9 +26,9 @@ class InvoiceItem < ApplicationRecord
     if !self.applied_discount.nil?
       discount = ( 1 - (self.applied_discount.discount_percent.to_d / 100))
       self.unit_price = (self.unit_price * discount)
-      return self
+      self
     else
-      return self
+      self
     end
   end
 end

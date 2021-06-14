@@ -92,6 +92,18 @@ RSpec.describe Invoice, type: :model do
       end
     end
 
+    describe 'discounted_merchant_revenue' do
+      it 'shows discounted revenue for a given merchant' do
+        invoice = Invoice.first
+        merchant = Merchant.find(3)
+        BulkDiscount.destroy_all
+        merchant.bulk_discounts.create!(quantity_threshold: 5, discount_percent: 5)
+        merchant.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 30)
+        merchant.bulk_discounts.create!(quantity_threshold: 70, discount_percent: 50)
+        expect(((invoice.discounted_merchant_revenue(merchant).to_f) /100).round(2) ).to eq(203.10)
+      end
+    end
+
     describe 'discounted_revenue' do
       before(:each) do
         @merchant_1 = Merchant.find(1)

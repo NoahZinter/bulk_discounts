@@ -20,6 +20,18 @@ class Invoice < ApplicationRecord
     .sum("invoice_items.quantity * invoice_items.unit_price")
   end
 
+  def discounted_merchant_revenue(merchant)
+    inv_items = invoice_items.joins(item: :merchant)
+    .where(merchants: {id: merchant.id})
+    .select("invoice_items.*")
+    discounted = inv_items.each do |ii|
+      ii.apply_discount
+    end
+    discounted.map do |ii|
+      ii.unit_price * ii.quantity
+    end.sum
+  end
+
   def discounted_revenue
     discounted = invoice_items.each do |ii|
       ii.apply_discount
