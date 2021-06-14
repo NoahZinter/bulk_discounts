@@ -24,7 +24,44 @@ RSpec.describe Invoice, type: :model do
 
     describe 'merchant_invoices' do
       it 'selects invoices for a merchant' do
-        
+        merchant = Merchant.find(2)
+        expected = [
+          Invoice.find(4),
+          Invoice.find(5),
+          Invoice.find(7),
+          Invoice.find(8),
+          Invoice.find(11),
+          Invoice.find(12),
+          Invoice.find(16),
+          Invoice.find(17),
+          Invoice.find(19),
+          Invoice.find(20),
+          Invoice.find(21),
+          Invoice.find(22),
+          Invoice.find(23),
+          Invoice.find(24),
+          Invoice.find(25),
+          Invoice.find(26),
+          Invoice.find(27),
+          Invoice.find(28),
+          Invoice.find(30),
+          Invoice.find(31),
+          Invoice.find(32),
+          Invoice.find(33),
+          Invoice.find(34),
+          Invoice.find(35),
+          Invoice.find(36),
+          Invoice.find(37),
+          Invoice.find(38),
+          Invoice.find(39),
+          Invoice.find(41),
+          Invoice.find(42),
+          Invoice.find(43),
+          Invoice.find(44),
+          Invoice.find(48),
+          Invoice.find(50)
+        ]
+        expect(Invoice.merchant_invoices(merchant.id)).to eq(expected)
       end
     end
 
