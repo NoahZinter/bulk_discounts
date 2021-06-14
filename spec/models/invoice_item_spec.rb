@@ -59,6 +59,18 @@ RSpec.describe InvoiceItem, type: :model do
 
         expect(@invoice_item_1.unit_price.to_f).to eq(36.25)
       end
+
+      it 'does not misapply discounts' do
+        static_ii = InvoiceItem.find(60)
+
+        expect(static_ii.item.merchant.id).to eq(5)
+        expect(Merchant.find(5).bulk_discounts).to eq([])
+        expect(static_ii.unit_price.to_f).to eq(192.0)
+
+        static_ii.apply_discount
+
+        expect(static_ii.unit_price.to_f).to eq(192.0)
+      end
     end
   end
 end
