@@ -21,4 +21,11 @@ class InvoiceItem < ApplicationRecord
     .where("quantity_threshold <= ?", self.quantity)
     .first
   end
+
+  def apply_discount
+    if !self.applied_discount.nil?
+      discount = ( 1 - (self.applied_discount.discount_percent.to_d / 100))
+      self.unit_price = (self.unit_price * discount)
+    end
+  end
 end

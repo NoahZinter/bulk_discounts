@@ -86,11 +86,10 @@ RSpec.describe Invoice, type: :model do
 
     describe 'discounted_revenue' do
       before(:each) do
-        @invoice = Invoice.find(1)
-        @invoice_item_1 = InvoiceItem.find(1)
         @merchant_1 = Merchant.find(1)
         @merchant_2 = Merchant.find(2)
         @merchant_3 = Merchant.find(3)
+        @invoice = @merchant_3.invoices.first
         BulkDiscount.destroy_all
         @discount_1 = @merchant_3.bulk_discounts.create!(quantity_threshold: 5, discount_percent: 5)
         @discount_2 = @merchant_3.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 30)

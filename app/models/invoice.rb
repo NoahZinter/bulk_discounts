@@ -15,7 +15,14 @@ class Invoice < ApplicationRecord
   end
 
   def discounted_revenue
-    
+    # discounted = invoice_items.map do |invoice_item|
+    #   if !invoice_item.applied_discount.nil?
+    #     discount = 1 - (invoice_item.applied_discount.discount_percent / 100)
+    #     invoice_item.unit_price = (invoice_item.unit_price * discount)
+    #   end
+    # end
+    # discounted.sum('quantity * unit_price')
+    invoice_items.select()
   end
 
   def self.incomplete_invoices
