@@ -132,12 +132,12 @@ RSpec.describe 'merchant invoice show page' do
     discount_11 = merchant.bulk_discounts.create!(quantity_threshold: 30, discount_percent: 5)
     visit "/merchants/#{merchant.id}/invoices/#{invoice.id}"
 
-    expect(items[0].merchant_id).to eq 3
-    expect(items[1].merchant_id).to eq 1
+    expect(items[0].merchant_id).to eq 1
+    expect(items[1].merchant_id).to eq 3
     expect(items[2].merchant_id).to eq 3
     expect(items[3].merchant_id).to eq 3
-    expect(page).to have_link("#{items[0].name} applied discount")
-    expect(page).not_to have_link("#{items[1].name} applied discount")
+    expect(page).not_to have_link("#{items[0].name} applied discount")
+    expect(page).to have_link("#{items[1].name} applied discount")
     expect(page).to have_link("#{items[2].name} applied discount")
     expect(page).to have_link("#{items[3].name} applied discount")
   end
@@ -155,7 +155,7 @@ RSpec.describe 'merchant invoice show page' do
     discount_11 = merchant.bulk_discounts.create!(quantity_threshold: 30, discount_percent: 5)
     visit "/merchants/#{merchant.id}/invoices/#{invoice.id}"
 
-    click_link("#{items[0].name} applied discount")
+    click_link("#{items[2].name} applied discount")
     expect(current_path).to eq "/merchants/#{merchant.id}/bulk_discounts/#{discount_10.id}"
   end
 
@@ -172,6 +172,58 @@ RSpec.describe 'merchant invoice show page' do
     discount_11 = merchant.bulk_discounts.create!(quantity_threshold: 30, discount_percent: 5)
     visit "/merchants/#{merchant.id}/invoices/#{invoice.id}"
 
-    expect(page).not_to have_link("#{items[1].name} applied discount")
+    expect(page).not_to have_link("#{items[0].name} applied discount")
+  end
+
+  it 'shows total merchant revenue' do
+    invoice = Invoice.find(1)
+    items = invoice.items
+    merchant = Merchant.find(3)
+    BulkDiscount.destroy_all
+    discount_1 = merchant.bulk_discounts.create!(quantity_threshold: 5, discount_percent: 5)
+    discount_2 = merchant.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 30)
+    discount_3 = merchant.bulk_discounts.create!(quantity_threshold: 70, discount_percent: 50)
+    discount_9 = merchant.bulk_discounts.create!(quantity_threshold: 10, discount_percent: 30)
+    discount_10 = merchant.bulk_discounts.create!(quantity_threshold: 25, discount_percent: 75)
+    discount_11 = merchant.bulk_discounts.create!(quantity_threshold: 30, discount_percent: 5)
+    visit "/merchants/#{merchant.id}/invoices/#{invoice.id}"
+
+    expect(page).to have_content("Merchant Revenue: For #{merchant.name}: $ 308.25")
+  end
+
+  it 'shows discounted merchant revenue' do
+    invoice = Invoice.find(1)
+    items = invoice.items
+    merchant = Merchant.find(3)
+    BulkDiscount.destroy_all
+    discount_1 = merchant.bulk_discounts.create!(quantity_threshold: 5, discount_percent: 5)
+    discount_2 = merchant.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 30)
+    discount_3 = merchant.bulk_discounts.create!(quantity_threshold: 70, discount_percent: 50)
+    discount_9 = merchant.bulk_discounts.create!(quantity_threshold: 10, discount_percent: 30)
+    discount_10 = merchant.bulk_discounts.create!(quantity_threshold: 25, discount_percent: 75)
+    discount_11 = merchant.bulk_discounts.create!(quantity_threshold: 30, discount_percent: 5)
+    visit "/merchants/#{merchant.id}/invoices/#{invoice.id}"
+
+    expect(page).to have_content("Merchant Discounted Revenue: For #{merchant.name}: $ 176.28")
+  end
+
+  it 'Shows discounted revenue for merchants with no discounts' do
+    invoice = Invoice.find(1)
+    items = invoice.items
+    merchant = Merchant.find(3)
+    no_discount_merchant = Merchant.find(1)
+    BulkDiscount.destroy_all
+    discount_1 = merchant.bulk_discounts.create!(quantity_threshold: 5, discount_percent: 5)
+    discount_2 = merchant.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 30)
+    discount_3 = merchant.bulk_discounts.create!(quantity_threshold: 70, discount_percent: 50)
+    discount_9 = merchant.bulk_discounts.create!(quantity_threshold: 10, discount_percent: 30)
+    discount_10 = merchant.bulk_discounts.create!(quantity_threshold: 25, discount_percent: 75)
+    discount_11 = merchant.bulk_discounts.create!(quantity_threshold: 30, discount_percent: 5)
+    visit "/merchants/#{no_discount_merchant.id}/invoices/#{invoice.id}"
+
+    save_and_open_page
+
+    expect(page).to have_content("Merchant Revenue: For #{no_discount_merchant.name}: $ 318.66")
+    expect(page).to have_content("Merchant Discounted Revenue: For #{no_discount_merchant.name}: $ 318.66")
   end
 end

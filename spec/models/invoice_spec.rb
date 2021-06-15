@@ -102,6 +102,13 @@ RSpec.describe Invoice, type: :model do
         merchant.bulk_discounts.create!(quantity_threshold: 70, discount_percent: 50)
         expect(((invoice.discounted_merchant_revenue(merchant).to_f) /100).round(2) ).to eq(203.10)
       end
+
+      it 'does not change revenue for merchants without discounts' do
+        invoice = Invoice.first
+        merchant = Merchant.find(3)
+
+        expect((invoice.discounted_merchant_revenue(merchant).to_f) /100 ).to eq(308.25)
+      end
     end
 
     describe 'discounted_revenue' do
@@ -113,6 +120,7 @@ RSpec.describe Invoice, type: :model do
         BulkDiscount.destroy_all
         @discount_1 = @merchant_3.bulk_discounts.create!(quantity_threshold: 5, discount_percent: 10)
        end
+
       it 'shows revenue with relevant discount applied' do
         expect((@invoice.revenue.to_f) / 100).to eq(626.91)
         expect(((@invoice.discounted_revenue.to_f) / 100).round(2)).to eq(596.09)
@@ -130,8 +138,6 @@ RSpec.describe Invoice, type: :model do
         expect((@invoice.revenue.to_f) / 100).to eq(626.91)
         expect(((@invoice.discounted_revenue.to_f) / 100).round(2)).to eq(596.09)
       end
-
-
     end
   end
 end
