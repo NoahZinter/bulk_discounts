@@ -1,62 +1,59 @@
 <div class="col-lg-8">
-<div class="row">
-  <div class="col-lg-4 rounded" style="border: 2px red; padding: 15px">
-    <div class="card " style="background-color: rgb(191, 202, 209);min-width: 480px">
-      <div class="card-header" style="background-color: rgb(134, 153, 165)">
-        <h3 class="card-title">Invoice # <%= @invoice.id %></h3>
-        <hr
-        class="float-left"
-        style="
+  <div class="row">
+    <div class="col-lg-4 rounded" style="border: 2px red; padding: 15px">
+      <div class="card " style="background-color: rgb(191, 202, 209);min-width: 700px">
+        <div class="card-header" style="background-color: rgb(134, 153, 165)">
+          <h3 class="card-title">Invoice # <%= @invoice.id %></h3>
+          <hr class="float-left" style="
           color: rgb(105, 0, 0);
           border: 2px solid rgb(112, 0, 0);
           width: 50%;
-        "
-      />
-        <h4>Status: <%= @invoice.status %></h4>
-        <h4>Ordered: <%= @invoice.formatted_time %></h4>
-        <!-- <h4 style="padding-top: 8px; color: rgb(191, 202, 209);" class="card-title"><%= @invoice.id %> Status: <%= @invoice.status%></h4> -->
-        <h4>Customer: <%= @customer.first_name + ' ' + @customer.last_name %></h4>
-        <h3>Invoice Revenue: $<%= (@invoice.revenue.to_f) / 100 %></h3>
-        <h3>Merchant Revenue: <%= "For #{@merchant.name}: $ #{((@merch_revenue.to_f) /100).round(2)} " %></h3>
-        <h3>Merchant Discounted Revenue: <%= "For #{@merchant.name}: $ #{((@discounted_revenue.to_f) /100).round(2)} " %></h3>
-        <br>
-      </div>
-      <div class="card-body" style="background-color: rgb(217, 221, 222)">
-        <table class="table table-bordered">
-          <tr>
-            <th scope="col" >#</th>
-            <th>Name</th>
-            <th>quantity</th>
-            <th>status</th>
-            <th></th>
-          </tr>
-          <% @invoice_items.each_with_index do |item, index| %>
+        " />
+          <h4>Status: <%= @invoice.status %></h4>
+          <h4>Ordered: <%= @invoice.formatted_time %></h4>
+          <h4>Customer: <%= @customer.first_name + ' ' + @customer.last_name %></h4>
+          <h3>Invoice Revenue: $<%= (@invoice.revenue.to_f) / 100 %></h3>
+          <h3>Merchant Revenue: <%= "For #{@merchant.name}: $ #{((@merch_revenue.to_f) /100).round(2)} " %></h3>
+          <h3>Merchant Discounted Revenue: <%= "For #{@merchant.name}: $ #{((@discounted_revenue.to_f) /100).round(2)} " %></h3>
+          <br>
+        </div>
+        <div class="card-body" style="background-color: rgb(217, 221, 222)">
+          <table class="table table-bordered">
+            <tr>
+              <th scope="col">#</th>
+              <th>Name</th>
+              <th>quantity</th>
+              <th>status</th>
+              <th></th>
+            </tr>
+            <% @invoice_items.each_with_index do |item, index| %>
             <tr>
               <th scope="row"><%=index + 1%></th>
               <td><%= item.name %></td>
               <td><%= item.quantity %></td>
-              <% if !item.applied_discount.nil? %>
-              <td><%= link_to "#{item.name} applied discount", "/merchants/#{@merchant.id}/bulk_discounts/#{item.applied_discount.id}" %> </td>
-              <% end %>
+
               <td class="status">
                 <div class="dropdown" id="item_id-<%= item.id %>">
                   <button class="btn btn-primary dropdown-toggle float-left" type="button" data-toggle="dropdown" id="f<%=item.id%>">
                     <%= item.status %>
-                  <span class="caret"></span></button>
+                    <span class="caret"></span></button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown-<%= item.id %>">
                     <% @invoice_items.statuses.keys().each do |status| %>
-                      <%= link_to status, "/invoice_items/#{item.id}/#{status}", method: :patch, params: {status: status}, :class=>"dropdown-item"%>
-                      
+                    <%= link_to status, "/invoice_items/#{item.id}/#{status}", method: :patch, params: {status: status}, :class=>"dropdown-item"%>
+
                     <% end %>
                   </div>
                 </div>
-            </td>
-              <td>$<%= (item.unit_price.to_f) / 100 %></td>
+              </td>
+              <td>$<%= (item.unit_price.to_f) / 100 %>
+              <% if !item.applied_discount.nil? %>
+              <td><%= link_to "#{item.name} applied discount", "/merchants/#{@merchant.id}/bulk_discounts/#{item.applied_discount.id}" %> </td>
+              <% end %></td>
             </tr>
-          <% end %>
-        </table>
+            <% end %>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
