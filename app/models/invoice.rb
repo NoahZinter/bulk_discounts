@@ -14,6 +14,33 @@ class Invoice < ApplicationRecord
     invoice_items.sum('quantity * unit_price')
   end
 
+  def discounted_revenue
+    discounted = invoice_items.each do |ii|
+      ii.apply_discount
+    end
+    discounted.map do |ii|
+      ii.unit_price * ii.quantity
+    end.sum
+  end
+
+  def merchant_revenue(merchant)
+    invoice_items.joins(item: :merchant)
+    .where(merchants: {id: merchant.id})
+    .sum("invoice_items.quantity * invoice_items.unit_price")
+  end
+
+  def discounted_merchant_revenue(merchant)
+    inv_items = invoice_items.joins(item: :merchant)
+    .where(merchants: {id: merchant.id})
+    .select("invoice_items.*")
+    discounted = inv_items.each do |ii|
+      ii.apply_discount
+    end
+    discounted.map do |ii|
+      ii.unit_price * ii.quantity
+    end.sum
+  end
+
   def self.incomplete_invoices
     joins(:invoice_items)
       .where('invoice_items.status != 2')

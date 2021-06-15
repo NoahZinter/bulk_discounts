@@ -9,11 +9,11 @@
 
 <p>Created at: <%= @invoice_created_at %></p>
 <p>Customer: <%= (@invoice.customer.first_name + " " + @invoice.customer.last_name) %></p>
-<p>Total Revenue For This Invoice: <%= number_to_currency(@invoice.revenue / 100) %></p>
-
+<p>Total Revenue For This Invoice: $<%= (@invoice.revenue.to_f / 100).round(2) %></p>
+<p>Discounted Revenue For This Invoice: $<%= (@invoice.discounted_revenue.to_f / 100).round(2) %></p>
 <% @invoice.invoice_items.each do |ii| %>
   <p>Item name: <%= ii.item.name %></p>
   <p>Item quantity: <%= ii.quantity %></p>
   <p>Item status: <%= ii.status %></p>
-  <p>Item price: <%= ii.unit_price %></p>
+  <p>Item price: $<%= (ii.unit_price.to_f / 100).round(2) %></p>
 <% end %>

@@ -24,17 +24,17 @@ RSpec.describe 'Admin Invoice Show' do
     expect(page).to have_content(customer.last_name)
   end
 
-  xit 'updates an invoice' do
-    invoice = Invoice.first
+  it 'updates an invoice' do
+    invoice = Invoice.find(1)
     visit "/admin/invoices/#{invoice.id}"
 
-    expect(page).to have_select('invoice_status', selected: invoice.status)
+    expect(page).to have_select('invoice_status', with_options:['in progress', 'cancelled', 'completed'])
     select 'in progress', from: 'invoice_status'
-    click_on 'commit'
+    click_on 'Update Invoice'
 
-    expect(page).to have_select('invoice_status', selected: 'in progress')
+    expect(page).to have_select('invoice_status', with_options:['in progress', 'cancelled', 'completed'])
     select 'completed', from: 'invoice_status'
-    click_on 'commit'
+    click_on 'Update Invoice'
 
     expect(invoice.status).to eq 'completed'
   end
@@ -60,10 +60,10 @@ RSpec.describe 'Admin Invoice Show' do
     expect(page).to have_content(invoice.invoice_items[1].quantity)
     expect(page).to have_content(invoice.invoice_items[2].quantity)
     expect(page).to have_content(invoice.invoice_items[3].quantity)
-    expect(page).to have_content(invoice.invoice_items[0].unit_price)
-    expect(page).to have_content(invoice.invoice_items[1].unit_price)
-    expect(page).to have_content(invoice.invoice_items[2].unit_price)
-    expect(page).to have_content(invoice.invoice_items[3].unit_price)
+    expect(page).to have_content((invoice.invoice_items[0].unit_price.to_f / 100).round(2))
+    expect(page).to have_content((invoice.invoice_items[1].unit_price.to_f / 100).round(2))
+    expect(page).to have_content((invoice.invoice_items[2].unit_price.to_f / 100).round(2))
+    expect(page).to have_content((invoice.invoice_items[3].unit_price.to_f / 100).round(2))
     expect(page).to have_content(invoice.invoice_items[0].status)
     expect(page).to have_content(invoice.invoice_items[1].status)
     expect(page).to have_content(invoice.invoice_items[2].status)
@@ -73,8 +73,26 @@ RSpec.describe 'Admin Invoice Show' do
   it 'shows the total revenue' do
     invoice = Invoice.first
     visit "/admin/invoices/#{invoice.id}"
-    invoice_revenue = invoice.revenue.to_f / 100
 
-    expect(page).to have_content("Total Revenue For This Invoice: $#{invoice_revenue}")
+    expect(page).to have_content("Total Revenue For This Invoice: $626.91")
+  end
+
+  it 'shows the discounted revenue' do
+    invoice = Invoice.first
+    merchant = Merchant.find(3)
+    BulkDiscount.destroy_all
+    merchant.bulk_discounts.create!(quantity_threshold: 5, discount_percent: 5)
+    merchant.bulk_discounts.create!(quantity_threshold: 20, discount_percent: 30)
+    merchant.bulk_discounts.create!(quantity_threshold: 70, discount_percent: 50)
+    visit "/admin/invoices/#{invoice.id}"
+
+    expect(page).to have_content("Discounted Revenue For This Invoice: $521.76")
+  end
+
+  it 'shows the same revenue under discounted revenue if no discount' do
+    invoice = Invoice.first
+    visit "/admin/invoices/#{invoice.id}"
+
+    expect(page).to have_content("Discounted Revenue For This Invoice: $626.91")
   end
 end

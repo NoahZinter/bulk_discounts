@@ -4,6 +4,7 @@ class Merchant < ApplicationRecord
   has_many :items
   has_many :bulk_discounts
   has_many :invoice_items, through: :items
+  has_many :invoices, through: :invoice_items
 
   def self.top_5_merchants
     joins(items: :invoice_items)
