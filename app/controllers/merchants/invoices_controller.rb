@@ -14,7 +14,6 @@ module Merchants
       @invoice_items = @invoice.invoice_items_formatted
       @merch_revenue = @invoice.merchant_revenue(@merchant)
       @discounted_revenue = @invoice.discounted_merchant_revenue(@merchant)
-      # binding.pry
     end
   end
 end

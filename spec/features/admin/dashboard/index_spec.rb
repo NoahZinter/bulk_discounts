@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe 'Admin Dashboard' do
   it 'shows the header for the admin dashboard' do
     visit '/admin'
-    save_and_open_page
     expect(page).to have_content('Admin Dashboard')
   end
 

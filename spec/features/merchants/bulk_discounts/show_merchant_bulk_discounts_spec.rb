@@ -28,6 +28,5 @@ describe 'merchant bulk discount show' do
     click_link("Edit This Discount")
 
     expect(current_path).to eq "/merchants/#{@merchant.id}/bulk_discounts/#{@discount_1.id}/edit"
-    save_and_open_page
   end
 end
