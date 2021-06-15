@@ -4,9 +4,6 @@ require 'rails_helper'
 require 'factory_bot_rails'
 
 RSpec.describe 'merchant invoice show page' do
-  before(:each) do
-    # Capybara.default_driver = :selenium_headless
-  end
   #   As a merchant
   # When I visit my merchant invoice show page
   # Then I see the total revenue that will be generated from all of my items on the invoice
@@ -100,23 +97,18 @@ RSpec.describe 'merchant invoice show page' do
   # I am taken back to the merchant invoice show page
   # And I see that my Item's status has now been updated
 
-  xit 'allows changing the item status' do
+  it 'allows changing the item status' do
     invoice = Invoice.all[10]
     items = invoice.invoice_items_formatted
     visit "/merchants/#{items[0].merchant_id}/invoices/#{invoice.id}"
-    # within("#item_id-#{items.first.id}") do
-    #   find("#f#{items.first.id}").click
-    #     page.select "shipped"
-    # end
-    # save_and_open_page
-    within("#item_id-#{items.first.id}") do
-      within("#f#{items.first.id}") do
-        within("dropdown-#{items.first.id}") do
-          click_link('shipped')
-        end
-      end
+    expect(page).to have_link('pending')
+    expect(page).to have_link('packaged')
+    expect(page).to have_link('shipped')
+    within ".table" do
+      click_link('shipped', :match => :first)
     end
-    expect(first('.status').text).to eq 'shipped'
+
+    expect(first('.status').text).to eq "shipped\npending packaged shipped"
   end
 
   it 'contains links to applied discounts' do
@@ -220,8 +212,6 @@ RSpec.describe 'merchant invoice show page' do
     discount_10 = merchant.bulk_discounts.create!(quantity_threshold: 25, discount_percent: 75)
     discount_11 = merchant.bulk_discounts.create!(quantity_threshold: 30, discount_percent: 5)
     visit "/merchants/#{no_discount_merchant.id}/invoices/#{invoice.id}"
-
-    save_and_open_page
 
     expect(page).to have_content("Merchant Revenue: For #{no_discount_merchant.name}: $ 318.66")
     expect(page).to have_content("Merchant Discounted Revenue: For #{no_discount_merchant.name}: $ 318.66")
