@@ -75,6 +75,20 @@ namespace :csv_load do
     print "\n"
   end
 
+  desc 'load bulk_discounts csv'
+  task bulk_discounts: :environment do
+    csv_path = 'db/data/bulk_discounts.csv'
+    i = 1
+    CSV.foreach(csv_path, headers: true) do |row|
+      if BulkDiscount.create! row.to_h
+        print "#{i} BulkDiscount Records Done\r"
+        i += 1
+      end
+    end
+    ActiveRecord::Base.connection.reset_pk_sequence!('bulk_discounts')
+    print "\n"
+  end
+
   desc 'load transactions csv'
   task transactions: :environment do
     csv_path = 'db/data/transactions.csv'
@@ -90,7 +104,7 @@ namespace :csv_load do
   end
 
   desc 'run all csv files'
-  task all: %w[customers merchants invoices items invoice_items transactions] do
+  task all: %w[customers merchants invoices items invoice_items transactions bulk_discounts] do
     Rails.env = 'development'
     print "All CSV files loaded. \n"
   end

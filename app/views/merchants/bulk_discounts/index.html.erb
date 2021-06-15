@@ -2,7 +2,7 @@
 <%= button_to "Create New Discount", merchants_new_discount_path, method: :get %>
 <div class="row">
   <div class="col-sm">
-    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+    <div class="card text-dark bg-white mb-3" style="max-width: 18rem;">
       <div class="card-body">
         <p class="card-text"><% @bulk_discounts.each do |discount| %>
           <%= "Discount Quantity Threshold: #{discount.quantity_threshold}" %>
