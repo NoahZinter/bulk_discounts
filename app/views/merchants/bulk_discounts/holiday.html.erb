@@ -1,0 +1,9 @@
+<%= "Create a New Holiday Discount for #{@merchant.name}" %>
+
+<%= form_with url: merchants_create_discount_path, method: :post do |f| %>
+<p id="threshold"><%= f.label :quantity_threshold %>
+  <%= f.number_field :quantity_threshold, :value => 2%></p>
+<p id="percent"><%= f.label :discount_percent %>
+  <%= f.number_field :discount_percent, :value => 30 %></p>
+<p><%= f.submit %></p>
+<% end %>

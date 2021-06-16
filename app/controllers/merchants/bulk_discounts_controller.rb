@@ -15,6 +15,10 @@ module Merchants
       @merchant = Merchant.find(params[:id])
     end
 
+    def holiday
+      @merchant = Merchant.find(params[:id])
+    end
+
     def create
       merchant = Merchant.find(params[:id])
       discount = merchant.bulk_discounts.new(discount_params)

@@ -19,7 +19,9 @@
       <div class="card-body">
         <p class="card-text"><% @holidays.each do |holiday|%>
           <%= "Holiday: #{holiday['localName']}" %>
-          <%= "Is on: #{holiday['date']}" %></p>
+          <%= "Is on: #{holiday['date']}" %>
+          <%= link_to "Create #{holiday['localName']} Discount", 
+          merchants_holiday_discount_path %> </p>
         <% end %>
       </div>
     </div>

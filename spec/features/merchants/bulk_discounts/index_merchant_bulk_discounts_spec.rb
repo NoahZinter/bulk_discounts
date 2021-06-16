@@ -135,4 +135,16 @@ describe 'merchant bulk discounts index' do
     expect(page).not_to have_content('Discount Percentage: 20')
     expect(page).to have_content('Discount Deleted!')
   end
+
+  it 'contains a link to create new holiday discounts' do
+    expect(page).to have_link('Create Independence Day Discount', :count => 1)
+    expect(page).to have_link('Create Labor Day Discount', :count => 1)
+    expect(page).to have_link('Create Columbus Day Discount', :count => 1)
+  end
+
+  it 'clicking the link travels to page to create holiday discount' do
+    click_link('Create Labor Day Discount')
+
+    expect(current_path).to eq "/merchants/#{@merchant.id}/bulk_discounts/holiday"
+  end
 end
