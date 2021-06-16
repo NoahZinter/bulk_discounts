@@ -147,4 +147,4 @@ describe 'merchant bulk discounts index' do
 
     expect(current_path).to eq "/merchants/#{@merchant.id}/bulk_discounts/holiday"
   end
-endho
+end
