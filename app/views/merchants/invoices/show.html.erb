@@ -14,7 +14,7 @@
           <h4>Customer: <%= @customer.first_name + ' ' + @customer.last_name %></h4>
           <h3>Invoice Revenue: $<%= (@invoice.revenue.to_f) / 100 %></h3>
           <h3>Merchant Revenue: <%= "For #{@merchant.name}: $ #{((@merch_revenue.to_f) /100).round(2)} " %></h3>
-          <h3>Merchant Discounted Revenue: <%= "For #{@merchant.name}: $ #{((@discounted_revenue.to_f) /100).round(2)} " %></h3>
+          <h3>Merchant Discounted Revenue: <%= "For #{@merchant.name}: $ #{currency(@discounted_revenue)} " %></h3>
           <br>
         </div>
         <div class="card-body" style="background-color: rgb(217, 221, 222)">
